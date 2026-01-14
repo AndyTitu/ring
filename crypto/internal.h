@@ -135,6 +135,20 @@ static inline int buffers_alias(const void *a, size_t a_bytes,
 #pragma warning(disable: 4244)
 #endif
 
+#if defined(__GNUC__) && __GNUC__ >= 2
+static inline uint32_t CRYPTO_bswap4(uint32_t x) {
+  return __builtin_bswap32(x);
+}
+#elif defined(_MSC_VER)
+#pragma warning(push, 3)
+#include <stdlib.h>
+#pragma warning(pop)
+#pragma intrinsic(_byteswap_uint64, _byteswap_ulong)
+static inline uint32_t CRYPTO_bswap4(uint32_t x) {
+  return _byteswap_ulong(x);
+}
+#endif
+
 // crypto_word_t is the type that most constant-time functions use. Ideally we
 // would like it to be |size_t|, but NaCl builds in 64-bit mode with 32-bit
 // pointers, which means that |size_t| can be 32 bits when |BN_ULONG| is 64
