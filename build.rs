@@ -306,11 +306,15 @@ fn main() {
     );
 
     // Keep in sync with `core_name_and_version!` in prefixed.rs.
-    let core_name_and_version = {
-        let name = std::env::var("CARGO_PKG_NAME").unwrap();
-        let version = std::env::var("CARGO_PKG_VERSION").unwrap();
-        name + "_core_" + &version.replace(&['-', '.'][..], "_")
-    };
+    let core_name_and_version = [
+        &env::var(&env::CARGO_PKG_NAME).unwrap(),
+        "core",
+        &env::var(&env::CARGO_PKG_VERSION_MAJOR).unwrap(),
+        &env::var(&env::CARGO_PKG_VERSION_MINOR).unwrap(),
+        &env::var(&env::CARGO_PKG_VERSION_PATCH).unwrap(),
+        &env::var(&env::CARGO_PKG_VERSION_PRE).unwrap(), // Often empty
+    ]
+    .join("_");
     // Ensure `links` in Cargo.toml is consistent with the version.
     assert_eq!(
         &env::var(&env::CARGO_MANIFEST_LINKS).unwrap(),
