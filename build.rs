@@ -312,7 +312,7 @@ fn main() {
         &env::var(&env::CARGO_PKG_VERSION_MAJOR).unwrap(),
         &env::var(&env::CARGO_PKG_VERSION_MINOR).unwrap(),
         &env::var(&env::CARGO_PKG_VERSION_PATCH).unwrap(),
-        &env::var(&env::CARGO_PKG_VERSION_PRE).unwrap(), // Often empty
+        &env::var(&env::CARGO_PKG_VERSION_PRE).unwrap().replace(&['-', '.'][..], "_"), // Often empty
     ]
     .join("_");
     // Ensure `links` in Cargo.toml is consistent with the version.
