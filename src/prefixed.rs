@@ -10,7 +10,7 @@ macro_rules! core_name_and_version {
             "_",
             env!("CARGO_PKG_VERSION_PATCH"),
             "_",
-            env!("CARGO_PKG_VERSION_PRE"), // Often empty
+            env!("CARGO_PKG_VERSION_PRE").replace(&['-', '.'][..], "_"), // Often empty
         )
     };
 }
